@@ -1,6 +1,6 @@
 # APOD_WallPaper
 
-This easy-to-install and easy-to-use programs brings a new amazing Astronomy Picture of the Day ([APOD](https://apod.nasa.gov/apod/astropix.html)) directly to your desktop every day! This program leverages NASA APOD's [API](https://github.com/nasa/apod-api) to automatically fetch the image in HD, it downloads it to the selected folder, resize it to fit your screen's resolution and sets it as the desktop's wallpaper while also providing its title, author and brief description!
+This easy-to-install and easy-to-use program brings a new amazing Astronomy Picture of the Day ([APOD](https://apod.nasa.gov/apod/astropix.html)) directly to your desktop every day! This program leverages NASA APOD's [API](https://github.com/nasa/apod-api) to automatically fetch the image in HD, it downloads it to the selected folder, resize it to fit your screen's resolution and sets it as the desktop's wallpaper while also providing its title, author and brief description!
 
 ## Requirements
 
