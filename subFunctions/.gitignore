@@ -1,0 +1,8 @@
+!.gitignore
+
+# folders
+*/__pycache__
+
+# ignore certain file extensions
+*.txt
+*.zip
