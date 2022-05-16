@@ -6,3 +6,4 @@
 # ignore certain file extensions
 *.txt
 *.zip
+*.pyc
