@@ -4,9 +4,14 @@ This easy-to-install and easy-to-use program brings a new amazing Astronomy Pict
 
 ## Requirements
 
-* Python: certainly works with version 3.8.8, but should work with any recent version. Available at [https://www.python.org/downloads/](https://www.python.org/downloads/)
-* pip: used for installing Python packages. Available at [https://pypi.org/project/pip/](https://pypi.org/project/pip/)
-* More packages are required to run the program, but they should be automatically downloaded during setup operations
+* Python: works with version 3.8.8, any recent version is likely fine. Available at [https://www.python.org/downloads/](https://www.python.org/downloads/)
+* pip: used for installing Python packages (should already come with Python installation). Available at [https://pypi.org/project/pip/](https://pypi.org/project/pip/)
+* More packages are required to run the program, but they should be automatically downloaded during setup operations. For completeness, here is what they are:
+  * [screeninfo](https://pypi.org/project/screeninfo/) 
+  * [nasapy](https://github.com/aschleg/nasapy)
+  * [pandas](https://pypi.org/project/pandas/)
+  * [ipython](https://pypi.org/project/ipython/)
+  * [pillow](https://pypi.org/project/Pillow/)
 
 ## Instructions
 
