@@ -1,5 +1,6 @@
-![APOD diagram](APOD diagram.png)
-
+<p>
+    <img src="APOD diagram.png"/>
+</p>
 
 # APOD_WallPaper
 
