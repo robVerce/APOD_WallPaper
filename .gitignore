@@ -12,3 +12,4 @@ activate.sh
 *egg-info
 options.json
 *tmp*
+API_KEY.txt

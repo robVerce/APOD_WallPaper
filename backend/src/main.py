@@ -1,7 +1,9 @@
 from pathlib import Path
 import ctypes
+import html
 import os
-import nasapy
+import re
+import requests
 import tempfile
 from datetime import datetime
 import PIL.Image
@@ -18,6 +20,21 @@ HERE = Path(__file__).parent
 PATH_TMP = Path(tempfile.gettempdir()) / "apod_wallpaper_tmp.jpg"
 PATH_OPTIONS = HERE / OPTIONS_FILE_NAME
 MIN_DATE = "1995-06-16"
+APOD_BASIC_URL = "https://science.nasa.gov/wp-json/wp/v2/apod-basic/{legacy_date}"
+
+
+def strip_html(text):
+    if not text:
+        return text
+    text = re.sub(r"<[^>]+>", "", text)
+    return html.unescape(text).strip()
+
+
+def to_legacy_date_code(date):
+    if isinstance(date, str):
+        date = datetime.strptime(date, DATE_FORMAT)
+    return date.strftime("%y%m%d")
+
 
 class ApodWallPaper(object):
     def __init__(self, path_options=PATH_OPTIONS):
@@ -35,22 +52,33 @@ class ApodWallPaper(object):
         self.height = options["screen_height"]
         self.today = datetime.today().strftime(DATE_FORMAT)
 
-        # connect to NASA
-        try:
-            self.nasa = nasapy.Nasa()
-        except Exception as e:
-            raise Exception("Could not connect to nasa. Check internet connection and try again")
+    def get_apod_info(self, date):
+
+        # get image metadata only, no download
+        legacy_date = to_legacy_date_code(date)
+        response = requests.get(APOD_BASIC_URL.format(legacy_date=legacy_date))
+
+        if response.status_code != 200:
+            return {}
+
+        apod = response.json()
+
+        if apod.get("media_type") != "image":
+            return {}
+        if not apod.get("hdurl"):
+            return {}
+
+        apod["explanation"] = strip_html(apod.get("explanation"))
+        apod["copyright"] = strip_html(apod.get("copyright"))
+
+        return apod
 
     def download_image(self, date):
 
-        # get image
-        apod = self.nasa.picture_of_the_day(date=date, hd=True)
+        apod = self.get_apod_info(date)
+        if not apod:
+            return {}
 
-        if apod["media_type"] != "image":
-            return {}
-        if "hdurl" not in apod.keys():
-            return {}
-        
         # extract information
         title = apod["title"].replace(" ","_").replace(":","_")
         title = f"{apod['date']}_{title}.jpg"

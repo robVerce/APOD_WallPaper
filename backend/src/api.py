@@ -21,10 +21,31 @@ class Api:
             return None
         return load_json(PATH_OPTIONS)
 
-    def save_settings(self, path_save):
+    def save_settings(self, path_save=None):
         return get_settings(path_save=path_save)
 
-    def get_apod(self, date):
+    def get_apod_preview(self, date):
+        if not self.has_settings():
+            return {"error": "No settings saved yet. Please configure settings first."}
+
+        app = ApodWallPaper()
+        apod = app.get_apod_info(date)
+        if not apod:
+            return {"error": f"No APOD image available for {date}"}
+
+        return {
+            "date": apod.get("date"),
+            "copyright": apod.get("copyright"),
+            "title": apod.get("title"),
+            "explanation": apod.get("explanation"),
+            # NASA's APOD API no longer returns a separate low-res image URL;
+            # "url" is now the APOD post page link, not an image (see
+            # APOD-APIs-and-RSS-info.pdf). "hdurl" is the only image URL
+            # available, so the frontend downscales it visually via CSS.
+            "preview_url": apod.get("hdurl"),
+        }
+
+    def set_wallpaper(self, date):
         if not self.has_settings():
             return {"error": "No settings saved yet. Please configure settings first."}
 
