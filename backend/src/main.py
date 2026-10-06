@@ -1,6 +1,8 @@
 from pathlib import Path
+import ctypes
 import os
 import nasapy
+import tempfile
 from datetime import datetime
 import PIL.Image
 import ssl
@@ -13,7 +15,7 @@ DATE_FORMAT = '%Y-%m-%d'
 OPTIONS_FILE_NAME = "options.json"
 FOLDER_NAME = "AstroImages"
 HERE = Path(__file__).parent
-PATH_TMP = HERE / "tmp.jpg"
+PATH_TMP = Path(tempfile.gettempdir()) / "apod_wallpaper_tmp.jpg"
 PATH_OPTIONS = HERE / OPTIONS_FILE_NAME
 MIN_DATE = "1995-06-16"
 
@@ -64,7 +66,7 @@ class ApodWallPaper(object):
         # return info
         d = {
             "date": apod.get("date", None),
-            "copyright": apod.get("copyrigth", None),
+            "copyright": apod.get("copyright", None),
             "title": apod.get("title", None),
             "explanation": apod.get("explanation", None),
             "hdurl": apod.get("hdurl", None),
@@ -123,7 +125,7 @@ class ApodWallPaper(object):
     
     def set_image_as_wallpaper(self, path_image):
         SPI_SETDESKWALLPAPER = 20
-        ctypes.windll.user32.SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, path_image, 3)
+        ctypes.windll.user32.SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, str(path_image), 3)
         return True
 
 

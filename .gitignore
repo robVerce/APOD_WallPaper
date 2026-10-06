@@ -11,3 +11,4 @@
 activate.sh
 *egg-info
 options.json
+*tmp*
