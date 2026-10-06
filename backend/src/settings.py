@@ -1,8 +1,9 @@
 from screeninfo import get_monitors
 from tkinter import Tk
-from tkinter import filedialog   
+from tkinter import filedialog
 from pathlib import Path
 import os
+import sys
 
 from .utilities import load_json, write_json
 from .main import PATH_OPTIONS
@@ -58,4 +59,24 @@ def get_settings(path_save=None, path_test=None):
     else:
         write_json(PATH_OPTIONS, d_settings)
 
+    return d_settings
+
+
+def get_default_save_dir():
+    if getattr(sys, "frozen", False):
+        return Path(sys.executable).parent
+    return Path(__file__).resolve().parent.parent
+
+
+def ensure_settings():
+    if os.path.exists(PATH_OPTIONS):
+        return load_json(PATH_OPTIONS)
+
+    screen_width, screen_height = get_monitor_size()
+    d_settings = {
+        "path_save": str(get_default_save_dir()),
+        "screen_width": screen_width,
+        "screen_height": screen_height,
+    }
+    write_json(PATH_OPTIONS, d_settings)
     return d_settings

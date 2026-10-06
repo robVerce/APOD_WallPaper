@@ -1,7 +1,7 @@
 import os
 
 from .main import ApodWallPaper, PATH_OPTIONS
-from .settings import get_settings
+from .settings import ensure_settings, get_settings
 from .utilities import load_json
 
 
@@ -12,6 +12,9 @@ class Api:
     so this same shape could later be wrapped in FastAPI routes without
     changing the methods themselves.
     """
+
+    def __init__(self):
+        ensure_settings()
 
     def has_settings(self):
         return os.path.exists(PATH_OPTIONS)

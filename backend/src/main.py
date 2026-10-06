@@ -9,17 +9,26 @@ from datetime import datetime
 import PIL.Image
 import ssl
 import urllib.request
-from IPython.display import Image, display
 
 from .utilities import load_json, write_json
 
 DATE_FORMAT = '%Y-%m-%d'
 OPTIONS_FILE_NAME = "options.json"
 FOLDER_NAME = "AstroImages"
+APP_NAME = "APOD_WallPaper"
 HERE = Path(__file__).parent
 PATH_TMP = Path(tempfile.gettempdir()) / "apod_wallpaper_tmp.jpg"
-PATH_OPTIONS = HERE / OPTIONS_FILE_NAME
 MIN_DATE = "1995-06-16"
+
+
+def _default_options_dir():
+    base = os.environ.get("LOCALAPPDATA") or str(Path.home() / "AppData" / "Local")
+    d = Path(base) / APP_NAME
+    d.mkdir(parents=True, exist_ok=True)
+    return d
+
+
+PATH_OPTIONS = _default_options_dir() / OPTIONS_FILE_NAME
 APOD_BASIC_URL = "https://science.nasa.gov/wp-json/wp/v2/apod-basic/{legacy_date}"
 
 
