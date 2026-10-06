@@ -25,6 +25,10 @@ export function saveSettings(pathSave) {
   return callApi('save_settings', pathSave);
 }
 
-export function getApod(date) {
-  return callApi('get_apod', date);
+export function getApodPreview(date) {
+  return callApi('get_apod_preview', date);
+}
+
+export function setWallpaper(date) {
+  return callApi('set_wallpaper', date);
 }

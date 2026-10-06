@@ -1,15 +1,23 @@
-import React, { useState } from 'react';
-import DatePicker from 'react-datepicker';
-import "react-datepicker/dist/react-datepicker.css";
+import React, { useEffect, useState } from 'react';
 import './App.css'; // Import the CSS file
+import Home from './pages/Home';
+import Settings from './pages/Settings';
+import { hasSettings } from './api';
 
 const App = () => {
-  const [activeTab, setActiveTab] = useState('main');
-  const [startDate, setStartDate] = useState(new Date());
+  const [activeTab, setActiveTab] = useState(null);
+
+  useEffect(() => {
+    hasSettings().then((exists) => setActiveTab(exists ? 'main' : 'settings'));
+  }, []);
 
   const handleTabChange = (tabName) => {
     setActiveTab(tabName);
   };
+
+  if (activeTab === null) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <div className="app-container">
@@ -29,28 +37,9 @@ const App = () => {
       </header>
 
       <main className="content">
-        {activeTab === 'main' && (
-          <div className="columns-container">
-            {/* Left Column (30%) */}
-            <div className="left-column">
-              <h2>Date Selector</h2>
-              <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />
-              <p>Selected Date: {startDate.toDateString()}</p>
-            </div>
-
-            {/* Right Column (70%) */}
-            <div className="right-column">
-              <h2>Main Content Area</h2>
-              <p>This area takes up 70% of the space.</p>
-              <p>Content related to the selected date can go here.</p>
-            </div>
-          </div>
-        )}
+        {activeTab === 'main' && <Home />}
         {activeTab === 'settings' && (
-          <div>
-            <h2>Settings Tab Content</h2>
-            <p>This is where your application settings would go.</p>
-          </div>
+          <Settings onSaved={() => handleTabChange('main')} />
         )}
       </main>
     </div>
