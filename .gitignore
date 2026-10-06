@@ -13,3 +13,8 @@ activate.sh
 options.json
 *tmp*
 API_KEY.txt
+
+# packaging build output (see build.ps1)
+backend/build/
+backend/dist/
+installer/dist_installer/
