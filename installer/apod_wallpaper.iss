@@ -16,6 +16,7 @@ Compression=lzma2
 SolidCompression=yes
 SetupIconFile=..\frontend\src\public\favicon.ico
 UninstallDisplayIcon={app}\{#MyAppExeName}
+LicenseFile=..\LICENSE
 
 [Files]
 Source: "..\backend\dist\APOD_WallPaper.exe"; DestDir: "{app}"; Flags: ignoreversion

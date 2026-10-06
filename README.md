@@ -64,4 +64,8 @@ Requires Node, `uv`, and [Inno Setup](https://jrsoftware.org/isinfo.php) install
 
 This builds the React app, freezes the backend into two standalone executables with PyInstaller (`webview_app.spec`, `daily_wallpaper.spec`), and packages them into an installer with Inno Setup (`installer/apod_wallpaper.iss`). The result lands at `installer/dist_installer/APOD_WallPaper_Setup.exe`. Build artifacts (`backend/.build-venv/`, `backend/build/`, `backend/dist/`, `installer/dist_installer/`) are gitignored — they're generated output, not source.
 
+## License
+
+MIT © 2026 Roberto Vercellino — see [LICENSE](LICENSE).
+
 **Disclaimer:** I am sure there are many improvements that can be made to this application, as well as other similar programs online. If you have suggestions, questions or concerns, feel free to express them to me!
