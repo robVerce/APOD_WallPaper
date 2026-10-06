@@ -7,3 +7,7 @@
 *.txt
 *.zip
 *.pyc
+
+activate.sh
+*egg-info
+options.json
