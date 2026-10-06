@@ -61,12 +61,12 @@ const Home = () => {
         <DatePicker selected={selectedDate} onChange={setSelectedDate} maxDate={new Date()} />
         <p>Selected Date: {selectedDate.toDateString()}</p>
         <div>
-          <button onClick={handleGetImage} disabled={previewLoading}>
+          <button className="btn" onClick={handleGetImage} disabled={previewLoading}>
             {previewLoading ? 'Fetching...' : 'Get Image'}
           </button>
         </div>
         <div>
-          <button onClick={handleSetWallpaper} disabled={!apod || wallpaperStatus === 'loading'}>
+          <button className="btn" onClick={handleSetWallpaper} disabled={!apod || wallpaperStatus === 'loading'}>
             {wallpaperStatus === 'loading' ? 'Setting wallpaper...' : 'Set as Wallpaper'}
           </button>
         </div>

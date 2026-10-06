@@ -45,7 +45,7 @@ const Settings = ({ onSaved }) => {
         <p>No save folder configured yet. Choose one to get started.</p>
       )}
 
-      <button onClick={handleChooseFolder} disabled={saving}>
+      <button className="btn" onClick={handleChooseFolder} disabled={saving}>
         {saving ? 'Waiting for folder selection...' : 'Choose save folder'}
       </button>
 
