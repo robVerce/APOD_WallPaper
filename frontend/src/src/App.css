@@ -1,0 +1,47 @@
+.app-container {
+  padding: 20px;
+  font-family: sans-serif;
+}
+
+.tabs button {
+  padding: 10px 20px;
+  margin-right: 5px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  background-color: #f0f0f0;
+}
+
+.tabs button.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.content {
+  margin-top: 20px;
+  border: 1px solid #ccc;
+  padding: 20px;
+}
+
+.columns-container {
+  display: flex;
+}
+
+.left-column {
+  flex: 0 0 30%; /* 30% width */
+  padding-right: 20px;
+  border-right: 1px solid #eee;
+}
+
+.right-column {
+  flex: 0 0 70%; /* 70% width */
+  padding-left: 20px;
+}
+
+/* Basic styling for the react-datepicker input */
+.react-datepicker-wrapper input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+}
