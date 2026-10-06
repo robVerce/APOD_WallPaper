@@ -7,8 +7,6 @@ import requests
 import tempfile
 from datetime import datetime
 import PIL.Image
-import ssl
-import urllib.request
 
 from .utilities import load_json, write_json
 
@@ -94,11 +92,10 @@ class ApodWallPaper(object):
         path_save = self.path_save / title
                 
         # download image
-        ssl._create_default_https_context = ssl._create_unverified_context
-        urllib.request.urlretrieve(
-            url = apod["hdurl"],
-            filename = path_save
-        )
+        response = requests.get(apod["hdurl"])
+        response.raise_for_status()
+        with open(path_save, "wb") as f:
+            f.write(response.content)
 
         # return info
         d = {
