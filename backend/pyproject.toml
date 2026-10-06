@@ -9,6 +9,7 @@ dependencies = [
     "nasapy>=0.2.7",
     "pandas>=2.3.3",
     "pillow>=11.3.0",
+    "pywebview>=6.2.1",
     "screeninfo>=0.8.1",
 ]
 
