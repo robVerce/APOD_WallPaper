@@ -13,10 +13,6 @@ async function callApi(method, ...args) {
   return window.pywebview.api[method](...args);
 }
 
-export function hasSettings() {
-  return callApi('has_settings');
-}
-
 export function getSettings() {
   return callApi('get_settings');
 }

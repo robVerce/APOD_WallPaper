@@ -36,13 +36,11 @@ const Settings = ({ onSaved }) => {
     <div className="settings-page">
       <h2>Settings</h2>
 
-      {settings ? (
+      {settings && (
         <div className="settings-summary">
           <p><strong>Save folder:</strong> {settings.path_save}</p>
           <p><strong>Screen resolution:</strong> {settings.screen_width} x {settings.screen_height}</p>
         </div>
-      ) : (
-        <p>No save folder configured yet. Choose one to get started.</p>
       )}
 
       <button className="btn" onClick={handleChooseFolder} disabled={saving}>
