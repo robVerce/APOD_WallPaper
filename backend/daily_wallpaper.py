@@ -1,9 +1,9 @@
-import os
 import random
 import sys
 from datetime import datetime, timedelta
 
-from apod_wallpaper.main import ApodWallPaper, PATH_OPTIONS, MIN_DATE, DATE_FORMAT
+from apod_wallpaper.main import ApodWallPaper, MIN_DATE, DATE_FORMAT
+from apod_wallpaper.settings import ensure_settings
 
 MAX_ATTEMPTS = 3
 
@@ -16,9 +16,7 @@ def random_date():
 
 
 def main():
-    if not os.path.exists(PATH_OPTIONS):
-        print("No settings saved yet. Run the app once and configure settings first.")
-        sys.exit(1)
+    ensure_settings()
 
     app = ApodWallPaper()
     date = datetime.today()
