@@ -2,7 +2,7 @@
 
 a = Analysis(
     ['daily_wallpaper.py'],
-    excludes=['IPython', 'webview', 'tkinter'],
+    excludes=['IPython', 'webview'],
 )
 pyz = PYZ(a.pure)
 exe = EXE(
