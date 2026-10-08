@@ -15,12 +15,12 @@ No programming experience needed — just:
 1. Download `APOD_WallPaper_Setup.exe` from the [Releases page](../../releases).
 2. Double-click it to run the installer.
 3. Windows may show a blue "Windows protected your PC" screen. This is expected — the app isn't digitally signed, which costs money and isn't worth it for a small free tool. Click **More info**, then **Run anyway** to continue.
-4. Click through **Next** → **Install** in the setup wizard. No admin rights are needed.
+4. Click through **Next** → **Install** in the setup wizard. No admin rights are needed. Along the way you can optionally check **"Automatically update the wallpaper every day"** and/or **"Update the wallpaper now"**.
 5. Launch **APOD Wallpaper** from the Start Menu.
 
 The app opens straight to the main screen, ready to go — downloaded images are saved to an `AstroImages` folder next to wherever the app is installed by default. Pick a date, click **Get Image** to preview it, then **Set as Wallpaper** to apply it. If you'd rather save images somewhere else, open the **Settings** tab and click **Choose save folder** at any time.
 
-**Advanced (optional):** a small command-line tool, `tools\daily_wallpaper.exe` (inside the install folder), fetches and sets today's APOD with no window, retrying a few random dates if today's post isn't an image. You can wire this up to Windows Task Scheduler if you want your wallpaper to change automatically every day — it requires the main app to have been run at least once first (so its settings exist).
+**Automatic daily updates:** didn't check the box during install, or want to turn it off later? Open the **Settings** tab and use the **Automatic Daily Update** toggle at any time — it updates the wallpaper every day at 8:00 AM (and catches up if your PC was asleep at that time), with no need to keep the app open. Uninstalling the app also removes this automatic task.
 
 ## For Developers
 
@@ -28,10 +28,11 @@ The project has two parts: a Python backend (`backend/`, managed with [uv](https
 
 Key backend files:
 - `src/main.py` — `ApodWallPaper`: fetches APOD metadata/images from NASA's `apod-basic` feed, resizes/letterboxes to the screen resolution, sets the wallpaper.
-- `src/settings.py` — screen detection, the native save-folder picker, and `ensure_settings()` (auto-creates default settings on first run).
-- `src/api.py` — the thin boundary exposed to the frontend.
+- `src/settings.py` — screen detection, the native save-folder picker, and `ensure_settings()` (auto-creates default settings, defaulting the save folder to wherever the app is installed/running from, if none exist yet).
+- `src/api.py` — the thin boundary exposed to the frontend, including the scheduled-task controls below.
 - `webview_app.py` — the GUI entry point.
-- `daily_wallpaper.py` — the headless, no-UI script described above.
+- `daily_wallpaper.py` — the headless, no-UI script described above. Self-initializes settings via `ensure_settings()` if they don't exist yet, so it's safe to run standalone with no prior setup.
+- `create_task.ps1` / `remove_task.ps1` — register/unregister the daily 8 AM Windows Task Scheduler entry (`APOD_WallPaper_DailyUpdate`) that runs `daily_wallpaper.exe`. Invoked both by the Settings-page toggle (via `subprocess` in `api.py`) and by the Inno Setup installer/uninstaller.
 
 Running from source:
 
@@ -53,6 +54,8 @@ uv run python webview_app.py
 ```
 
 `backend/run_daily_wallpaper.bat` is a double-click-friendly wrapper around `daily_wallpaper.py` for quick manual testing during development.
+
+The app icon (`frontend/src/public/favicon.ico`, `logo192.png`, `logo512.png`) was generated from `icon.pdf` at the repo root — regenerate by rasterizing it and resizing with Pillow if it ever needs to change.
 
 ### Building the installer
 
