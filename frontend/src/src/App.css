@@ -106,6 +106,12 @@ body {
   margin: 16px 0;
 }
 
+.settings-auto-update {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid var(--color-border);
+}
+
 h2 {
   font-weight: 600;
   color: var(--color-text);

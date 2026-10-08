@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getSettings, saveSettings } from '../api';
+import { getSettings, saveSettings, isAutoUpdateEnabled, enableAutoUpdate, disableAutoUpdate } from '../api';
 
 const Settings = ({ onSaved }) => {
   const [settings, setSettings] = useState(null);
@@ -7,11 +7,19 @@ const Settings = ({ onSaved }) => {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
 
+  const [autoUpdate, setAutoUpdate] = useState(null);
+  const [autoUpdateBusy, setAutoUpdateBusy] = useState(false);
+  const [autoUpdateError, setAutoUpdateError] = useState(null);
+
   useEffect(() => {
     getSettings()
       .then(setSettings)
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
+
+    isAutoUpdateEnabled()
+      .then(setAutoUpdate)
+      .catch((err) => setAutoUpdateError(err.message));
   }, []);
 
   const handleChooseFolder = async () => {
@@ -25,6 +33,23 @@ const Settings = ({ onSaved }) => {
       setError(err.message);
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleToggleAutoUpdate = async () => {
+    setAutoUpdateBusy(true);
+    setAutoUpdateError(null);
+    try {
+      const result = autoUpdate ? await disableAutoUpdate() : await enableAutoUpdate();
+      if (result.error) {
+        setAutoUpdateError(result.error);
+      } else {
+        setAutoUpdate(result.enabled);
+      }
+    } catch (err) {
+      setAutoUpdateError(err.message);
+    } finally {
+      setAutoUpdateBusy(false);
     }
   };
 
@@ -48,6 +73,29 @@ const Settings = ({ onSaved }) => {
       </button>
 
       {error && <p className="settings-error">{error}</p>}
+
+      <div className="settings-auto-update">
+        <h3>Automatic Daily Update</h3>
+        <p>
+          {autoUpdate === null
+            ? 'Checking status...'
+            : autoUpdate
+              ? 'Enabled — the wallpaper updates automatically every day at 8:00 AM.'
+              : 'Disabled.'}
+        </p>
+        <button
+          className="btn"
+          onClick={handleToggleAutoUpdate}
+          disabled={autoUpdate === null || autoUpdateBusy}
+        >
+          {autoUpdateBusy
+            ? 'Updating...'
+            : autoUpdate
+              ? 'Disable automatic updates'
+              : 'Enable automatic updates'}
+        </button>
+        {autoUpdateError && <p className="settings-error">{autoUpdateError}</p>}
+      </div>
     </div>
   );
 };

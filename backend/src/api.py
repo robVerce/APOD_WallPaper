@@ -1,8 +1,23 @@
 import os
+import subprocess
+import sys
+from pathlib import Path
 
 from .main import ApodWallPaper, PATH_OPTIONS
 from .settings import ensure_settings, get_settings
 from .utilities import load_json
+
+TASK_NAME = "APOD_WallPaper_DailyUpdate"
+
+
+def _tools_dir():
+    if getattr(sys, "frozen", False):
+        return Path(sys.executable).parent / "tools"
+    return Path(__file__).resolve().parent.parent
+
+
+CREATE_TASK_SCRIPT = _tools_dir() / "create_task.ps1"
+REMOVE_TASK_SCRIPT = _tools_dir() / "remove_task.ps1"
 
 
 class Api:
@@ -63,3 +78,28 @@ class Api:
         info["full_path"] = str(info["full_path"])
         info["resized_path"] = str(resized_path)
         return info
+
+    def is_auto_update_enabled(self):
+        result = subprocess.run(
+            ["schtasks", "/query", "/tn", TASK_NAME],
+            capture_output=True,
+        )
+        return result.returncode == 0
+
+    def enable_auto_update(self):
+        result = subprocess.run(
+            ["powershell", "-ExecutionPolicy", "Bypass", "-File", str(CREATE_TASK_SCRIPT)],
+            capture_output=True, text=True,
+        )
+        if result.returncode != 0:
+            return {"error": result.stderr.strip() or "Failed to create the scheduled task."}
+        return {"enabled": True}
+
+    def disable_auto_update(self):
+        result = subprocess.run(
+            ["powershell", "-ExecutionPolicy", "Bypass", "-File", str(REMOVE_TASK_SCRIPT)],
+            capture_output=True, text=True,
+        )
+        if result.returncode != 0:
+            return {"error": result.stderr.strip() or "Failed to remove the scheduled task."}
+        return {"enabled": False}

@@ -28,3 +28,15 @@ export function getApodPreview(date) {
 export function setWallpaper(date) {
   return callApi('set_wallpaper', date);
 }
+
+export function isAutoUpdateEnabled() {
+  return callApi('is_auto_update_enabled');
+}
+
+export function enableAutoUpdate() {
+  return callApi('enable_auto_update');
+}
+
+export function disableAutoUpdate() {
+  return callApi('disable_auto_update');
+}
