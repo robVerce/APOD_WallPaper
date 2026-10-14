@@ -1,5 +1,5 @@
 #define MyAppName "APOD Wallpaper"
-#define MyAppVersion "1.0.0"
+#define MyAppVersion "1.1.0"
 #define MyAppExeName "APOD_WallPaper.exe"
 
 [Setup]
